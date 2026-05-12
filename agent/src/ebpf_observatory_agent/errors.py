@@ -1,0 +1,2 @@
+class CollectorError(RuntimeError):
+    pass
