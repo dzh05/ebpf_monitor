@@ -118,10 +118,8 @@ helper 负责加载 BPF 对象、挂载 tracepoint、读取 ringbuf，并输出 
 
 ```bash
 cd /root/ebpf-monitor/agent/src/ebpf_observatory_agent
-gcc -O2 -g ringbuf_helper.c -o /tmp/ringbuf_helper -I. -I/usr/include/x86_64-linux-gnu -lbpf -lelf -lz -pthread
+gcc -O2 -g ringbuf_helper.c -o ringbuf_helper -I. -I/usr/include/x86_64-linux-gnu -lbpf -lelf -lz -pthread
 ```
-
-建议把可执行文件放在 `/tmp/ringbuf_helper`，agent 默认也可以直接使用这个路径。
 
 ---
 
@@ -156,21 +154,17 @@ agent 会：
 示例：
 
 ```bash
-cd /root/ebpf-monitor
-source agent/.venv/bin/activate
-python -m ebpf_observatory_agent.cli \
-  --server-url http://127.0.0.1:8000 \
+pm2 start /root/ebpf-monitor/agent/.venv/bin/python \
+  --name ebpf-agent \
+  -- \
+  -m ebpf_observatory_agent.cli \
+  --server-url http://47.98.108.137:8080 \
   --agent-id test \
   --hostname test \
   --bpf-object-file /root/ebpf-monitor/agent/src/ebpf_observatory_agent/bpf/collector.bpf.o \
-  --ringbuf-helper-path /tmp/ringbuf_helper
+  --ringbuf-helper-path /root/ebpf-monitor/agent/src/ebpf_observatory_agent/ringbuf_helper
 ```
 
-python -m ebpf_observatory_agent.cli   --server-url http://38.207.189.106:8082 --agent-id test   --hostname test   --bpf-object-file /root/ebpf-monitor/agent/src/ebpf_observatory_agent/bpf/collector.bpf.o   --ringbuf-helper-path /tmp/ringbuf_helper   
-
-
-
-38.207.189.106 美国CMIN2
 
 ---
 
